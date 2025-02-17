@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories
         public Hobby Delete(int id)
         {
             var a = _context.Hobby.Find(id);
-            if (a == null) { return null; }
+            if (a == null) { return null ; }
             _context.Hobby.Remove(a);   
             _context.SaveChanges();
             return a;
