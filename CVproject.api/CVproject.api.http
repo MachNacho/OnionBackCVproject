@@ -1,0 +1,6 @@
+@CVproject.api_HostAddress = http://localhost:5058
+
+GET {{CVproject.api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
