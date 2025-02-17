@@ -21,12 +21,12 @@ namespace CVproject.api.Controllers
         }
         [HttpDelete]
         [Route("{id:int}")]
-        public IActionResult Delete([FromRoute]int id) 
+        public IActionResult Delete([FromRoute] int id)
         {
             var a = _hobbyService.DeleteHobby(id);
             if (a == null) { return NotFound(); }
             return Ok("Deleted");
         }
-        
+
     }
 }

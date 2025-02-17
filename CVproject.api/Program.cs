@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IHobbyRepository, HobbyRepository>();
-builder.Services.AddScoped<IHobbyService,HobbyService>();
+builder.Services.AddScoped<IHobbyService, HobbyService>();
 
 //Add db context and configure it
 builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("HomeConnection")); });

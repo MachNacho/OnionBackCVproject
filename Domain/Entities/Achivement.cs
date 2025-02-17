@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Domain.Entities
+﻿namespace Domain.Entities
 {
-    internal class Achivement
+    public class Achivement
     {
         public int ID { get; set; }
         public string? Title { get; set; }

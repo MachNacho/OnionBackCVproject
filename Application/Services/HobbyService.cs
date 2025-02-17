@@ -3,7 +3,7 @@ using Domain.Repositories;
 
 namespace Application.Services
 {
-    public class HobbyService:IHobbyService
+    public class HobbyService : IHobbyService
     {
         private readonly IHobbyRepository _hobbyRepository;
 

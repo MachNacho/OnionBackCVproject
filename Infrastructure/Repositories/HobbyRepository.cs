@@ -1,11 +1,6 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -24,8 +19,8 @@ namespace Infrastructure.Repositories
         public Hobby Delete(int id)
         {
             var a = _context.Hobby.Find(id);
-            if (a == null) { return null ; }
-            _context.Hobby.Remove(a);   
+            if (a == null) { return null; }
+            _context.Hobby.Remove(a);
             _context.SaveChanges();
             return a;
         }
