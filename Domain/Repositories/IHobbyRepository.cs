@@ -5,8 +5,8 @@ namespace Domain.Repositories
     public interface IHobbyRepository
     {
         List<Hobby> GetAll();
-        Task Add(Hobby hobby);
-        Task Update(Hobby hobby);
+        Hobby Add(Hobby hobby);
+        Hobby Update(int id, Hobby hobby);
         Hobby Delete(int id);
     }
 }

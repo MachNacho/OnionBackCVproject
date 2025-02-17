@@ -1,9 +1,11 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -15,5 +17,6 @@ namespace Infrastructure.Data
         public DbSet<Project> projects { get; set; }
         public DbSet<ProjectTags> ProjectTags { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        
     }
 }

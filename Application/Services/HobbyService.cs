@@ -12,7 +12,7 @@ namespace Application.Services
             _hobbyRepository = hobbyRepository;
         }
 
-        public Task AddHobby(Hobby hobby)
+        public Hobby AddHobby(Hobby hobby)
         {
             return _hobbyRepository.Add(hobby);
         }
@@ -27,9 +27,9 @@ namespace Application.Services
             return _hobbyRepository.GetAll();
         }
 
-        public Task UpdateHobby(Hobby hobby)
+        public Hobby UpdateHobby(int id, Hobby hobby)
         {
-            return _hobbyRepository.Update(hobby);
+            return _hobbyRepository.Update(id, hobby);
         }
     }
 }

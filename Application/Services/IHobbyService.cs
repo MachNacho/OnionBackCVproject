@@ -5,8 +5,8 @@ namespace Application.Services
     public interface IHobbyService
     {
         List<Hobby> GetAllHobbies();
-        Task AddHobby(Hobby hobby);
-        Task UpdateHobby(Hobby hobby);
+        Hobby AddHobby(Hobby hobby);
+        Hobby UpdateHobby(int id, Hobby hobby);
         Hobby DeleteHobby(int id);
     }
 }

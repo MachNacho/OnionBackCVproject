@@ -11,9 +11,11 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
-        public Task Add(Hobby hobby)
+        public Hobby Add(Hobby hobby)
         {
-            throw new NotImplementedException();
+            _context.Hobby.Add(hobby);
+            _context.SaveChanges();
+            return hobby;
         }
 
         public Hobby Delete(int id)
@@ -30,9 +32,15 @@ namespace Infrastructure.Repositories
             return _context.Hobby.ToList();
         }
 
-        public Task Update(Hobby hobby)
+        public Hobby Update(int id, Hobby hobby)
         {
-            throw new NotImplementedException();
+            var a = _context.Hobby.Find(id);
+            if (a == null) { return null; }
+            a.Title = hobby.Title;
+            a.Description = hobby.Description;
+            a.ImageSrc = hobby.ImageSrc;
+            _context.SaveChanges();
+            return a;
         }
     }
 }

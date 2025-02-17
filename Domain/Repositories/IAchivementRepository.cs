@@ -5,8 +5,8 @@ namespace Domain.Repositories
     public interface IAchivementRepository
     {
         List<Achivement> GetAll();
-        Task Add(Achivement achivement);
-        Task Update(Achivement achivement);
+        Achivement Add(Achivement achivement);
+        Achivement Update(int id, Achivement achivement);
         Achivement Delete(int id);
     }
 }

@@ -1,4 +1,4 @@
-@CVproject.api_HostAddress = https://localhost:7186
+@CVproject.api_HostAddress = http://localhost:5058
 
 GET {{CVproject.api_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -11,5 +11,41 @@ GET {{CVproject.api_HostAddress}}/api/hobby
 
 @id=0
 DELETE {{CVproject.api_HostAddress}}/api/hobby/{{id}}
+
+###
+
+POST {{CVproject.api_HostAddress}}/api/hobby
+Content-Type: application/json
+
+{
+  //Hobby
+}
+
+###
+
+PATCH {{CVproject.api_HostAddress}}/api/hobby/{id}
+Content-Type: application/json
+
+{
+  //Hobby
+}
+
+###
+
+POST {{CVproject.api_HostAddress}}/api/user/login
+Content-Type: application/json
+
+{
+  //LoginDto
+}
+
+###
+
+POST {{CVproject.api_HostAddress}}/api/user/register
+Content-Type: application/json
+
+{
+  //RegisterDto
+}
 
 ###
