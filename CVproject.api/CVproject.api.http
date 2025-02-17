@@ -1,6 +1,15 @@
-@CVproject.api_HostAddress = http://localhost:5058
+@CVproject.api_HostAddress = https://localhost:7186
 
 GET {{CVproject.api_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+GET {{CVproject.api_HostAddress}}/api/hobby
+
+###
+
+@id=0
+DELETE {{CVproject.api_HostAddress}}/api/hobby/{{id}}
 
 ###

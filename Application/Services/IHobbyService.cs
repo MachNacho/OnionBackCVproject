@@ -2,11 +2,11 @@
 
 namespace Application.Services
 {
-    internal interface IHobbyService
+    public interface IHobbyService
     {
-        Task<List<Hobby>> GetAllHobbies();
+        List<Hobby> GetAllHobbies();
         Task AddHobby(Hobby hobby);
         Task UpdateHobby(Hobby hobby);
-        Task DeleteHobby(int id);
+        Hobby DeleteHobby(int id);
     }
 }
