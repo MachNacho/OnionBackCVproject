@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -11,35 +12,36 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
-        public Hobby Add(Hobby hobby)
+        public async Task<Hobby> Add(Hobby hobby)
         {
-            _context.Hobby.Add(hobby);
-            _context.SaveChanges();
+            await _context.Hobby.AddAsync(hobby);
+            await _context.SaveChangesAsync();
             return hobby;
         }
 
-        public Hobby Delete(int id)
+        public async Task<Hobby> Delete(int id)
         {
-            var a = _context.Hobby.Find(id);
+            var a = await _context.Hobby.FindAsync(id);
             if (a == null) { return null; }
             _context.Hobby.Remove(a);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return a;
         }
 
-        public List<Hobby> GetAll()
+        public async Task<List<Hobby>> GetAll()
         {
-            return _context.Hobby.ToList();
+            var a = _context.Hobby.AsQueryable();
+            return await a.ToListAsync();
         }
 
-        public Hobby Update(int id, Hobby hobby)
+        public async Task<Hobby> Update(int id, Hobby hobby)
         {
-            var a = _context.Hobby.Find(id);
+            var a = await _context.Hobby.FindAsync(id);
             if (a == null) { return null; }
             a.Title = hobby.Title;
             a.Description = hobby.Description;
             a.ImageSrc = hobby.ImageSrc;
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return a;
         }
     }

@@ -4,9 +4,9 @@ namespace Domain.Repositories
 {
     public interface IProjectRepository
     {
-        List<Project> GetAll();
-        Task Add(Project project);
-        Task Update(Project project);
-        Project Delete(int id);
+        Task<List<Project>> GetAll();
+        Task<Project> Add(Project project);
+        Task<Project> Update(int id,Project project);
+        Task<Project> Delete(int id);
     }
 }

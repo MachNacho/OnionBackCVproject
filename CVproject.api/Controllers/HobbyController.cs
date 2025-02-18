@@ -1,4 +1,4 @@
-﻿using Application.Services;
+﻿using Application.Contracts;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,30 +17,30 @@ namespace CVproject.api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            return Ok(_hobbyService.GetAllHobbies());
+            return Ok(await _hobbyService.GetAllHobbies());
         }
         [Authorize]
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var a = _hobbyService.DeleteHobby(id);
+            var a = await _hobbyService.DeleteHobby(id);
             if (a == null) { return NotFound(); }
             return Ok("Deleted");
         }
         [HttpPost]
-        public IActionResult Add([FromBody] Hobby hobby)
+        public async Task<IActionResult> Add([FromBody] Hobby hobby)
         {
-            var a = _hobbyService.AddHobby(hobby);
+            var a = await _hobbyService.AddHobby(hobby);
             return Created();
         }
         [HttpPatch]
         [Route("{id}")]
-        public IActionResult update([FromRoute] int id, [FromBody] Hobby hobby)
+        public async  Task<IActionResult> update([FromRoute] int id, [FromBody] Hobby hobby)
         {
-            var a = _hobbyService.UpdateHobby(id, hobby);
+            var a = await _hobbyService.UpdateHobby(id, hobby);
             if (a == null) { return NotFound(); }
             return Ok(a);
         }

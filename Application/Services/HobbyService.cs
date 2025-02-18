@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Contracts;
+using Domain.Entities;
 using Domain.Repositories;
 
 namespace Application.Services
@@ -12,24 +13,24 @@ namespace Application.Services
             _hobbyRepository = hobbyRepository;
         }
 
-        public Hobby AddHobby(Hobby hobby)
+        public async Task<Hobby> AddHobby(Hobby hobby)
         {
-            return _hobbyRepository.Add(hobby);
+            return await _hobbyRepository.Add(hobby);
         }
 
-        public Hobby DeleteHobby(int id)
+        public async Task<Hobby> DeleteHobby(int id)
         {
-            return _hobbyRepository.Delete(id);
+            return await _hobbyRepository.Delete(id);
         }
 
-        public List<Hobby> GetAllHobbies()
+        public async Task<List<Hobby>> GetAllHobbies()
         {
-            return _hobbyRepository.GetAll();
+            return await _hobbyRepository.GetAll();
         }
 
-        public Hobby UpdateHobby(int id, Hobby hobby)
+        public async Task<Hobby> UpdateHobby(int id, Hobby hobby)
         {
-            return _hobbyRepository.Update(id, hobby);
+            return await _hobbyRepository.Update(id, hobby);
         }
     }
 }

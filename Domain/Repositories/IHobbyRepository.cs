@@ -4,9 +4,9 @@ namespace Domain.Repositories
 {
     public interface IHobbyRepository
     {
-        List<Hobby> GetAll();
-        Hobby Add(Hobby hobby);
-        Hobby Update(int id, Hobby hobby);
-        Hobby Delete(int id);
+        Task<List<Hobby>> GetAll();
+        Task<Hobby> Add(Hobby hobby);
+        Task<Hobby> Update(int id, Hobby hobby);
+        Task<Hobby> Delete(int id);
     }
 }

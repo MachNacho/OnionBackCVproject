@@ -1,3 +1,4 @@
+using Application.Contracts;
 using Application.Services;
 using Domain.Entities;
 using Domain.Repositories;
@@ -52,7 +53,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 //Add db context and configure it
-builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("HomeConnection")); });
+builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection")); });
 //builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection"),b=>b.MigrationsAssembly("Infrastructure")); });
 var app = builder.Build();
 
@@ -62,7 +63,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseCors(x => x
      .AllowAnyMethod()
      .AllowAnyHeader()
