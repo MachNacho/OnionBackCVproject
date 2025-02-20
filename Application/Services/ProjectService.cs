@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Contracts;
+﻿using Application.Contracts;
 using Domain.Entities;
 using Domain.Repositories;
 
@@ -13,22 +8,22 @@ namespace Application.Services
     {
         private readonly IProjectRepository _projectRepository;
         public ProjectService(IProjectRepository projectRepository) { _projectRepository = projectRepository; }
-        public Task<Project> Add(Project project)
+        public Task<Project> AddProject(Project project)
         {
-            throw new NotImplementedException();
+            return _projectRepository.Add(project);
         }
 
-        public Task<Project> Delete(int id)
+        public Task<Project> DeleteProject(int id)
         {
-            throw new NotImplementedException();
+            return _projectRepository.Delete(id);
         }
 
-        public Task<List<Project>> GetAll()
+        public Task<List<Project>> GetAllProjects()
         {
-            throw new NotImplementedException();
+            return _projectRepository.GetAll();
         }
 
-        public async Task<Project> Update(int id,Project project)
+        public async Task<Project> UpdateProject(int id, Project project)
         {
             return await _projectRepository.Update(id, project);
         }

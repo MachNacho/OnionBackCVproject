@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -11,28 +12,29 @@ namespace Infrastructure.Repositories
         {
             _context = context;
         }
-        public Achivement Add(Achivement achivement)
+        public async Task<Achivement> Add(Achivement achivement)
         {
-            _context.Achivements.Add(achivement);
-            _context.SaveChanges();
+            await _context.Achivements.AddAsync(achivement);
+            await _context.SaveChangesAsync();
             return achivement;
         }
 
-        public Achivement Delete(int id)
+        public async Task<Achivement> Delete(int id)
         {
-            var a = _context.Achivements.Find(id);
+            var a = await _context.Achivements.FindAsync(id);
             if (a == null) { return null; }
             _context.Achivements.Remove(a);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return a;
         }
 
-        public List<Achivement> GetAll()
+        public async Task<List<Achivement>> GetAll()
         {
-            return _context.Achivements.ToList();
+            var a = _context.Achivements.AsQueryable();
+            return await a.ToListAsync();
         }
 
-        public Achivement Update(int id, Achivement achivement)
+        public async Task<Achivement> Update(int id, Achivement achivement)
         {
             var a = _context.Achivements.Find(id);
             if (a == null) { return null; }

@@ -51,9 +51,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// DJ - Token
 builder.Services.AddScoped<ITokenService, TokenService>();
+// DJ - Achivemetns
+builder.Services.AddScoped<IAchivementRepository, AchivementRepository>();
+builder.Services.AddScoped<IAchivementService, AchivementService>();
+
 //Add db context and configure it
-builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection")); });
+builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("HomeConnection")); });
 //builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection"),b=>b.MigrationsAssembly("Infrastructure")); });
 var app = builder.Build();
 

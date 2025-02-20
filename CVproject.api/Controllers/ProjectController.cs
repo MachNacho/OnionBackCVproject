@@ -1,7 +1,5 @@
 ﻿using Application.Contracts;
-using Application.Services;
 using Domain.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CVproject.api.Controllers
@@ -18,24 +16,27 @@ namespace CVproject.api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok();
+            return Ok(await _projectService.GetAllProjects());
         }
         [HttpPost]
-        public async Task<IActionResult> Add()
+        public async Task<IActionResult> Add([FromBody] Project project)
         {
-            return Ok();
+            var a = await _projectService.AddProject(project);
+            return Created();
         }
         [HttpPatch]
         [Route("{id}")]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] Project projec)
         {
+            var a = await _projectService.UpdateProject(id, projec);
+            if (a == null) { return NotFound(); }
             return Ok();
         }
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var a = await _projectService.Delete(id);
+            var a = await _projectService.DeleteProject(id);
             if (a == null) { return NotFound(); }
             return Ok("Deleted");
         }

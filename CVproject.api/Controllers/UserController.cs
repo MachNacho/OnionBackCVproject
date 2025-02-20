@@ -3,7 +3,6 @@ using Application.DTO;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite;
 
 namespace CVproject.api.Controllers
 {

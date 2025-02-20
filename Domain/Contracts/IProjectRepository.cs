@@ -6,7 +6,7 @@ namespace Domain.Repositories
     {
         Task<List<Project>> GetAll();
         Task<Project> Add(Project project);
-        Task<Project> Update(int id,Project project);
+        Task<Project> Update(int id, Project project);//TODO FIX UPDATE
         Task<Project> Delete(int id);
     }
 }

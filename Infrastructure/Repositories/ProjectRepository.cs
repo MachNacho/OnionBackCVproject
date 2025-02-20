@@ -34,7 +34,7 @@ namespace Infrastructure.Repositories
             return await a.ToListAsync();
         }
 
-        public async Task<Project> Update(int id ,Project project)
+        public async Task<Project> Update(int id, Project project)
         {
             var a = await _context.projects.FindAsync(id);
             if (a == null) { return null; }

@@ -1,46 +1,42 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CVproject.api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HobbyController : ControllerBase
+    public class AchivementController : ControllerBase
     {
-        private readonly IHobbyService _hobbyService;
-
-        public HobbyController(IHobbyService hobbyService)
+        private readonly IAchivementService _achivementService;
+        public AchivementController(IAchivementService achivementService)
         {
-            _hobbyService = hobbyService;
+            _achivementService = achivementService;
         }
-
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _hobbyService.GetAllHobbies());
+            return Ok(await _achivementService.GetAllAchivements());
         }
-        [Authorize]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var a = await _hobbyService.DeleteHobby(id);
+            var a = await _achivementService.DeleteAchivement(id);
             if (a == null) { return NotFound(); }
             return Ok("Deleted");
         }
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] Hobby hobby)
+        public async Task<IActionResult> Add([FromBody] Achivement Ach)
         {
-            var a = await _hobbyService.AddHobby(hobby);
+            var a = await _achivementService.AddAchivement(Ach);
             return Created();
         }
         [HttpPatch]
         [Route("{id}")]
-        public async Task<IActionResult> update([FromRoute] int id, [FromBody] Hobby hobby)
+        public async Task<IActionResult> update([FromRoute] int id, [FromBody] Achivement Ach)
         {
-            var a = await _hobbyService.UpdateHobby(id, hobby);
+            var a = await _achivementService.UpdateAchivement(id, Ach);
             if (a == null) { return NotFound(); }
             return Ok(a);
         }
