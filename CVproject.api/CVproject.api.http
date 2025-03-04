@@ -1,4 +1,4 @@
-@CVproject.api_HostAddress = https://localhost:7186
+@CVproject.api_HostAddress = https://localhost:44344
 
 GET {{CVproject.api_HostAddress}}/weatherforecast/
 Accept: application/json
@@ -72,5 +72,36 @@ GET {{CVproject.api_HostAddress}}/api/hobby
 ###
 
 GET {{CVproject.api_HostAddress}}/api/achivement
+
+###
+
+GET {{CVproject.api_HostAddress}}/api/project
+
+###
+
+POST {{CVproject.api_HostAddress}}/api/project
+Content-Type: application/json
+
+{
+  //Project
+}
+
+###
+
+POST {{CVproject.api_HostAddress}}/api/projecttags
+Content-Type: application/json
+
+{
+  //ProjectTags
+}
+
+###
+
+POST {{CVproject.api_HostAddress}}/api/tag
+Content-Type: application/json
+
+{
+  //Tag
+}
 
 ###

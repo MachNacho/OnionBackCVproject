@@ -1,34 +1,39 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
 using Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    internal class ProjectTagRepository : IProjectTagRepository
+    public class ProjectTagRepository : IProjectTagRepository
     {
         private readonly ApplicationDbContext _context;
         public ProjectTagRepository(ApplicationDbContext context)
         {
             _context = context;
         }
-        public async Task<> Add(ProjectTags projectTags)
+        public async Task<ProjectTags> Add(ProjectTags projectTags)
         {
-            return await _context.AddAsync(projectTags);
+            await _context.AddAsync(projectTags);
+            await _context.SaveChangesAsync();
+            return projectTags;
         }
 
-        public Task Delete()
+        public Task<ProjectTags> Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task Update()
+        public async Task<ProjectTags> Update(int id, ProjectTags projectTags)
         {
-            throw new NotImplementedException();
+            var a = await _context.ProjectTags.FindAsync(id);
+            if (projectTags == null)
+            {
+                return null;
+            }
+            a.ProjectID = projectTags.ProjectID;
+            a.TagID = projectTags.TagID;
+            await _context.SaveChangesAsync();
+            return a;
         }
     }
 }

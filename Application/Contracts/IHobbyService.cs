@@ -1,12 +1,13 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Contracts
 {
     public interface IHobbyService
     {
         Task<List<Hobby>> GetAllHobbies();
-        Task<Hobby> AddHobby(Hobby hobby);
-        Task<Hobby> UpdateHobby(int id, Hobby hobby);
-        Task<Hobby> DeleteHobby(int id);
+        Task<string> AddHobby(Hobby hobby);
+        Task<Hobby> UpdateHobby(int id, JsonPatchDocument<Hobby> hobby);
+        Task<string> DeleteHobby(int id);
     }
 }

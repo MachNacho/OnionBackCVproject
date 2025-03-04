@@ -30,8 +30,7 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Project>> GetAll()
         {
-            var a = _context.projects.AsQueryable();
-            return await a.ToListAsync();
+            return await _context.projects.Include(a => a.Tags).ThenInclude(pt => pt.Tag).AsQueryable().ToListAsync();
         }
 
         public async Task<Project> Update(int id, Project project)

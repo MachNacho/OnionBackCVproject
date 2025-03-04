@@ -1,6 +1,7 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
 using Domain.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Services
 {
@@ -13,22 +14,24 @@ namespace Application.Services
             _hobbyRepository = hobbyRepository;
         }
 
-        public async Task<Hobby> AddHobby(Hobby hobby)
+        public async Task<string> AddHobby(Hobby hobby)
         {
-            return await _hobbyRepository.Add(hobby);
+            return await _hobbyRepository.Add(hobby) ? "Success" : null;
         }
 
-        public async Task<Hobby> DeleteHobby(int id)
+        public async Task<string> DeleteHobby(int id)
         {
-            return await _hobbyRepository.Delete(id);
+            return await _hobbyRepository.Delete(id) ? "Success" : null;
         }
 
         public async Task<List<Hobby>> GetAllHobbies()
         {
-            return await _hobbyRepository.GetAll();
+            var a = await _hobbyRepository.GetAll();
+            if ((a == null) || (a.Count() == 0)) { return null; }
+            return a;
         }
 
-        public async Task<Hobby> UpdateHobby(int id, Hobby hobby)
+        public async Task<Hobby> UpdateHobby(int id, JsonPatchDocument<Hobby> hobby)
         {
             return await _hobbyRepository.Update(id, hobby);
         }

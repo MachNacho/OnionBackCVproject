@@ -1,23 +1,24 @@
 using Application.Contracts;
 using Application.Services;
+using Domain.Contracts;
 using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data;
+using Infrastructure.Middleware;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson(options => { options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; });//fixes circulating
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddScoped<IHobbyRepository, HobbyRepository>();
-builder.Services.AddScoped<IHobbyService, HobbyService>();
-
+builder.Services.AddResponseCaching();
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -56,9 +57,20 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 // DJ - Achivemetns
 builder.Services.AddScoped<IAchivementRepository, AchivementRepository>();
 builder.Services.AddScoped<IAchivementService, AchivementService>();
-
+//DJ - Project
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+//DJ - Hobby
+builder.Services.AddScoped<IHobbyRepository, HobbyRepository>();
+builder.Services.AddScoped<IHobbyService, HobbyService>();
+//DJ - Tag
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ITagService, TagService>();
+//DJ - TP
+builder.Services.AddScoped<IProjectTagRepository, ProjectTagRepository>();
+builder.Services.AddScoped<IProjectTagInterface, ProjectTagsService>();
 //Add db context and configure it
-builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("HomeConnection")); });
+builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection")); });
 //builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection"),b=>b.MigrationsAssembly("Infrastructure")); });
 var app = builder.Build();
 
@@ -79,3 +91,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+public partial class Program { }

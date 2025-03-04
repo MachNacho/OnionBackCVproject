@@ -1,11 +1,6 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
 using Domain.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Services
 {
@@ -23,7 +18,7 @@ namespace Application.Services
 
         public Task<Tag> DeleteTag(int id)
         {
-           return _tagRepository.Delete(id);
+            return _tagRepository.Delete(id);
         }
 
         public Task<Tag> UpdateTag(int id, Tag tag)

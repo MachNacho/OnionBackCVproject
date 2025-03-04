@@ -4,7 +4,7 @@ using Infrastructure.Data;
 
 namespace Infrastructure.Repositories
 {
-    public class TagRepository:ITagRepository
+    public class TagRepository : ITagRepository
     {
         private readonly ApplicationDbContext _context;
         public TagRepository(ApplicationDbContext context)
@@ -18,7 +18,7 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
             return tag;
         }
-            
+
 
         public async Task<Tag> Delete(int id)
         {
