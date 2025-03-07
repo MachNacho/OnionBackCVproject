@@ -93,6 +93,11 @@ namespace Tests.UnitTest
             //Assert
             Assert.That(result.Title, Is.EqualTo("Test2"));
         }
+        [TearDown]
+        public void TearDown()
+        {
+            _context.Dispose(); ;
+        }
     }
 
 }

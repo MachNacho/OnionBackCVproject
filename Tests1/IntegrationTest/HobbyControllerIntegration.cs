@@ -54,8 +54,7 @@ namespace Tests.IntegrationTest
             //await _client.PostAsJsonAsync("/api/Hobby", hobby);
 
             //Creating patch document
-            var hobbyPatch = new JsonPatchDocument<Hobby>();
-            hobbyPatch.Replace(h => h.Title, "Changed");
+            var hobbyPatch = new JsonPatchDocument<Hobby>().Replace(h => h.Title, "Changed");
 
             var jsonPatch = JsonSerializer.Serialize(hobbyPatch);
             var content = new StringContent(jsonPatch, System.Text.Encoding.UTF8, "application/json-patch+json");
@@ -73,6 +72,7 @@ namespace Tests.IntegrationTest
         [Test]
         public async Task DeleteEndpoint_ShouldReturn_OkStatusCode()
         {
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer","");
             //Arrange
             var requestUrl = "/api/Hobby/5002";
             //Act

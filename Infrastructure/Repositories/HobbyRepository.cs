@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Repositories;
 using Infrastructure.Data;
+using Infrastructure.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,7 @@ namespace Infrastructure.Repositories
         private readonly ApplicationDbContext _context;
         public HobbyRepository(ApplicationDbContext context)
         {
-            _context = context;
+            _context = context ?? throw new DatabaseConnectionException("Context is null");
         }
         public async Task<bool> Add(Hobby hobby)
         {
@@ -25,8 +26,6 @@ namespace Infrastructure.Repositories
             {
                 return false;
             }
-
-
         }
 
         public async Task<bool> Delete(int id)
