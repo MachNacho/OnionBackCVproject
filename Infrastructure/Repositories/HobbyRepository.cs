@@ -42,13 +42,13 @@ namespace Infrastructure.Repositories
 
         }
 
-        public async Task<List<Hobby>> GetAll()
+        public async Task<List<Hobby>?> GetAll()
         {
             var r = await _context.Hobby.AsNoTracking().ToListAsync(); // Prevents EF from tracking objects in memeory
             return r.Count == 0 ? null : r;
         }
 
-        public async Task<Hobby> Update(int id, JsonPatchDocument<Hobby> hobby)
+        public async Task<Hobby?> Update(int id, JsonPatchDocument<Hobby> hobby)
         {
             var a = await _context.Hobby.FindAsync(id);
             if (a == null) { return null; }

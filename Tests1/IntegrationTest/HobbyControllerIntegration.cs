@@ -72,7 +72,6 @@ namespace Tests.IntegrationTest
         [Test]
         public async Task DeleteEndpoint_ShouldReturn_OkStatusCode()
         {
-            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer","");
             //Arrange
             var requestUrl = "/api/Hobby/5002";
             //Act

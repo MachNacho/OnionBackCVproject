@@ -25,7 +25,6 @@ namespace CVproject.api.Controllers
             if (a == null) { return NoContent(); }
             return Ok(await _hobbyService.GetAllHobbies());
         }
-        [Authorize]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
