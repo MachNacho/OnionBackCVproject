@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
@@ -15,36 +16,54 @@ namespace Infrastructure.Repositories
         }
         public async Task<Project> Add(Project project)
         {
-            await _context.projects.AddAsync(project);
-            await _context.SaveChangesAsync();
-            return project;
+            try
+            {
+                await _context.projects.AddAsync(project);
+                await _context.SaveChangesAsync();
+                return project;
+            }
+            catch (Exception)
+            {
+                throw new BusinessRuleViolationException($"Value {project} can't be added");
+            }
+
         }
 
         public async Task<bool> Delete(int id)
         {
-            var a = await _context.projects.FindAsync(id);
-            if (a == null) { return null; }
-            _context.projects.Remove(a);
-            await _context.SaveChangesAsync();
-            return a;
+            try
+            {
+                var a = await _context.projects.FindAsync(id);
+                _context.projects.Remove(a);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new NotFoundException($"The ID: {id} isn't found in the records");
+            }
         }
 
         public async Task<List<Project>> GetAll()
         {
-            return await _context.projects.Include(a => a.Tags).ThenInclude(pt => pt.Tag).AsQueryable().ToListAsync();
+            var r = await _context.projects.AsNoTracking().ToListAsync(); // Prevents EF from tracking objects in memeory
+            return r.Count == 0 ? throw new EmptyOrNoRecordsException("No hobby exists") : r;
         }
 
         public async Task<Project> Update(int id, JsonPatchDocument<Project> project)
         {
-            var a = await _context.projects.FindAsync(id);
-            if (a == null) { return null; }
-            a.Title = project.Title;
-            a.Description = project.Description;
-            a.ProjectDate = project.ProjectDate;
-            a.Link = project.Link;
-            a.HasPublicLink = project.HasPublicLink;
-            await _context.SaveChangesAsync();
-            return a;
+            try
+            {
+                var a = await _context.projects.FindAsync(id);
+                if (a == null) { throw new NotFoundException($"The ID: {id} isn't found in the records"); }
+                project.ApplyTo(a);
+                await _context.SaveChangesAsync();
+                return a;
+            }
+            catch (Exception)
+            {
+                throw new BusinessRuleViolationException($"Value can't be updated");
+            }
         }
     }
 }

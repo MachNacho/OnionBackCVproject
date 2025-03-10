@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Contracts
 {
@@ -6,7 +7,7 @@ namespace Application.Contracts
     {
         Task<List<Project>> GetAllProjects();
         Task<Project> AddProject(Project project);
-        Task<Project> UpdateProject(int id, Project project);
-        Task<Project> DeleteProject(int id);
+        Task<Project> UpdateProject(int id, JsonPatchDocument<Project> project);
+        Task<bool> DeleteProject(int id);
     }
 }
