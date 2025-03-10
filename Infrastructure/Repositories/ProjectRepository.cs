@@ -46,7 +46,7 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Project>> GetAll()
         {
-            var r = await _context.projects.AsNoTracking().ToListAsync(); // Prevents EF from tracking objects in memeory
+            var r = await _context.projects.Include(x=>x.Tags).ThenInclude(p=>p.Tag).AsNoTracking().ToListAsync(); // Prevents EF from tracking objects in memeory
             return r.Count == 0 ? throw new EmptyOrNoRecordsException("No hobby exists") : r;
         }
 

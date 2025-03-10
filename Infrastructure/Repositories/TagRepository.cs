@@ -1,5 +1,6 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using Infrastructure.Data;
 
 namespace Infrastructure.Repositories
@@ -14,28 +15,51 @@ namespace Infrastructure.Repositories
 
         public async Task<Tag> Add(Tag tag)
         {
-            await _context.Tags.AddAsync(tag);
-            await _context.SaveChangesAsync();
-            return tag;
+            try
+            {
+                await _context.Tags.AddAsync(tag);
+                await _context.SaveChangesAsync();
+                return tag;
+            }
+            catch(Exception)
+            {
+                throw new BusinessRuleViolationException($"Value {tag.TagName} can't be added");
+            }
+
         }
 
 
-        public async Task<Tag> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var a = await _context.Tags.FindAsync(id);
-            if (a == null) { return null; }
-            _context.Tags.Remove(a);
-            await _context.SaveChangesAsync();
-            return a;
+            try
+            {
+                var a = await _context.Tags.FindAsync(id);
+                _context.Tags.Remove(a);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new NotFoundException($"The ID: {id} isn't found in the records");
+            }
+
         }
 
         public async Task<Tag> Update(int id, Tag tag)
         {
-            var a = await _context.Tags.FindAsync(id);
-            if (a == null) { return null; }
-            a.TagName = tag.TagName;
-            await _context.SaveChangesAsync();
-            return a;
+            try
+            {
+                var a = await _context.Tags.FindAsync(id);
+                if (a == null) { throw new NotFoundException($"The ID: {id} isn't found in the records"); }
+                a.TagName = tag.TagName;
+                await _context.SaveChangesAsync();
+                return a;
+            }
+            catch (Exception)
+            {
+                throw new BusinessRuleViolationException($"Value can't be updated");
+            }
+
         }
     }
 }

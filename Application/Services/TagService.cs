@@ -16,7 +16,7 @@ namespace Application.Services
             return _tagRepository.Add(tag);
         }
 
-        public Task<Tag> DeleteTag(int id)
+        public Task<bool> DeleteTag(int id)
         {
             return _tagRepository.Delete(id);
         }

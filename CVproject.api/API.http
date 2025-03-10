@@ -1,0 +1,6 @@
+﻿@API_HostAddress = https://localhost:7186
+
+@id=3
+DELETE {{API_HostAddress}}/api/tag?id={{id}}
+
+###

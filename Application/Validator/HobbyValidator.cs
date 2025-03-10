@@ -17,10 +17,6 @@ namespace Application.Validator
             if (string.IsNullOrWhiteSpace(hobby.Description) || !IsValidDescription(hobby.Description))
                 errors.Add("Description contains invalid characters.");
 
-            // ImageSrc validation (must be a valid URL if provided)
-            if (!string.IsNullOrWhiteSpace(hobby.ImageSrc) && !IsValidUrl(hobby.ImageSrc))
-                errors.Add("Image source must be a valid URL.");
-
             if (errors.Count > 0)
             {
                 Console.WriteLine("Validation errors: " + string.Join(", ", errors)); // For debugging

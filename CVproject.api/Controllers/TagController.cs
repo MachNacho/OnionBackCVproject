@@ -1,5 +1,6 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -14,23 +15,53 @@ namespace API.Controllers
             _tagService = tagService;
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteTag(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteTag([FromRoute]int id)
         {
-            await _tagService.DeleteTag(id);
-            return Ok("Deleted");
+            try
+            {
+                await _tagService.DeleteTag(id);
+                return Ok("Deleted");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
         [HttpPost]
         public async Task<IActionResult> AddTag(Tag tag)
         {
-            await _tagService.AddTag(tag);
-            return Created();
+            if (!ModelState.IsValid) { return BadRequest(); }
+            try
+            {
+                await _tagService.AddTag(tag);
+                return Created();
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
         [HttpPatch]
-        public async Task<IActionResult> UpdateTag(int id, Tag tag)
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateTag([FromRoute] int id,[FromBody] Tag tag)
         {
-            var a = await _tagService.UpdateTag(id, tag);
-            if (a == null) { return NotFound(); }
-            return Ok(a);
+            try
+            {
+                var a = await _tagService.UpdateTag(id, tag);
+                return Ok(a);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
     }
 }
