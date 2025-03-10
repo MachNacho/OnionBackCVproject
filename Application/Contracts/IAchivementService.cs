@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Contracts
 {
@@ -6,7 +7,7 @@ namespace Application.Contracts
     {
         Task<List<Achivement>> GetAllAchivements();
         Task<Achivement> AddAchivement(Achivement achivement);
-        Task<Achivement> UpdateAchivement(int id, Achivement achivement);
-        Task<Achivement> DeleteAchivement(int id);
+        Task<Achivement> UpdateAchivement(int id, JsonPatchDocument<Achivement> ach);
+        Task<bool> DeleteAchivement(int id);
     }
 }

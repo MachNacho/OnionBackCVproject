@@ -1,8 +1,10 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CVproject.api.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -14,31 +16,67 @@ namespace CVproject.api.Controllers
             _achivementService = achivementService;
         }
         [HttpGet]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)]//Cache response
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _achivementService.GetAllAchivements());
+            try
+            {
+                var a = await _achivementService.GetAllAchivements();
+                return Ok(await _achivementService.GetAllAchivements());
+            }
+            catch (EmptyOrNoRecordsException)
+            {
+                return NoContent();
+            }
         }
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var a = await _achivementService.DeleteAchivement(id);
-            if (a == null) { return NotFound(); }
-            return Ok("Deleted");
+            try
+            {
+                var a = await _achivementService.DeleteAchivement(id);
+                return Ok("Deleted");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] Achivement Ach)
         {
-            var a = await _achivementService.AddAchivement(Ach);
-            return Created();
+            if (!ModelState.IsValid) { return BadRequest(); }
+            try
+            {
+                var a = await _achivementService.AddAchivement(Ach);
+                return Created();
+            }
+            catch (ValidationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
         [HttpPatch]
         [Route("{id}")]
-        public async Task<IActionResult> update([FromRoute] int id, [FromBody] Achivement Ach)
+        public async Task<IActionResult> update([FromRoute] int id, [FromBody] JsonPatchDocument<Achivement> Ach)
         {
-            var a = await _achivementService.UpdateAchivement(id, Ach);
-            if (a == null) { return NotFound(); }
-            return Ok(a);
+            try
+            {
+                if (Ach == null) { return BadRequest("Invalid patch document"); }
+                var a = await _achivementService.UpdateAchivement(id, Ach);
+                return Ok(a);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

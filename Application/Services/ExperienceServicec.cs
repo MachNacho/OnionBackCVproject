@@ -1,6 +1,5 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
-using Domain.Repositories;
 
 namespace Application.Services
 {

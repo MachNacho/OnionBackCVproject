@@ -1,9 +1,9 @@
-﻿using System.Net.Http.Json;
-using System.Text.Json;
-using Domain.Entities;
+﻿using Domain.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace Tests.IntegrationTest
 {
@@ -60,7 +60,7 @@ namespace Tests.IntegrationTest
             var content = new StringContent(jsonPatch, System.Text.Encoding.UTF8, "application/json-patch+json");
 
             var requestUrl = "/api/Hobby/6002";
-           
+
             //Act
             var response = await _client.PatchAsync(requestUrl, content);
 

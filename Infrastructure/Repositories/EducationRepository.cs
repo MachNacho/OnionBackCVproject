@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using Domain.Repositories;
+﻿using Domain.Contracts;
+using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,7 +19,7 @@ namespace Infrastructure.Repositories
             return education;
         }
 
-        public async Task<Education> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             var a = await _context.educations.FindAsync(id);
             _context.educations.Remove(a);

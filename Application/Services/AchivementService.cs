@@ -1,6 +1,8 @@
 ﻿using Application.Contracts;
+using Application.Validator;
+using Domain.Contracts;
 using Domain.Entities;
-using Domain.Repositories;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Services
 {
@@ -13,10 +15,11 @@ namespace Application.Services
         }
         public async Task<Achivement> AddAchivement(Achivement achivement)
         {
+            AchievementValidator.Validate(achivement);
             return await _achivementRepository.Add(achivement);
         }
 
-        public async Task<Achivement> DeleteAchivement(int id)
+        public async Task<bool> DeleteAchivement(int id)
         {
             return await _achivementRepository.Delete(id);
         }
@@ -26,9 +29,9 @@ namespace Application.Services
             return await _achivementRepository.GetAll();
         }
 
-        public async Task<Achivement> UpdateAchivement(int id, Achivement achivement)
+        public async Task<Achivement> UpdateAchivement(int id, JsonPatchDocument<Achivement> ach)
         {
-            return await _achivementRepository.Update(id, achivement);
+            return await _achivementRepository.Update(id, ach);
         }
     }
 }

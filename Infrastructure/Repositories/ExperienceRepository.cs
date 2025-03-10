@@ -1,5 +1,4 @@
 ﻿using Domain.Entities;
-using Domain.Repositories;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +21,8 @@ namespace Infrastructure.Repositories
         public async Task<Experience> Delete(int id)
         {
             var a = await _context.experiences.FindAsync(id);
-            if (a == null) { return null; };
+            if (a == null) { return null; }
+            ;
             _context.experiences.Remove(a);
             await _context.SaveChangesAsync();
             return a;

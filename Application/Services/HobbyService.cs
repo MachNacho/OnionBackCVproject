@@ -1,6 +1,7 @@
 ﻿using Application.Contracts;
+using Application.Validator;
+using Domain.Contracts;
 using Domain.Entities;
-using Domain.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Services
@@ -16,6 +17,7 @@ namespace Application.Services
 
         public async Task<string> AddHobby(Hobby hobby)
         {
+            HobbyValidator.Validate(hobby);
             return await _hobbyRepository.Add(hobby) ? "Success" : null;
         }
 
@@ -27,7 +29,6 @@ namespace Application.Services
         public async Task<List<Hobby>> GetAllHobbies()
         {
             var a = await _hobbyRepository.GetAll();
-            if ((a == null) || (a.Count() == 0)) { return null; }
             return a;
         }
 

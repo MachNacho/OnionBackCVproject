@@ -1,8 +1,8 @@
+using API.Middleware;
 using Application.Contracts;
 using Application.Services;
 using Domain.Contracts;
 using Domain.Entities;
-using Domain.Repositories;
 using Infrastructure.Data;
 using Infrastructure.Middleware;
 using Infrastructure.Repositories;
@@ -70,7 +70,7 @@ builder.Services.AddScoped<ITagService, TagService>();
 builder.Services.AddScoped<IProjectTagRepository, ProjectTagRepository>();
 builder.Services.AddScoped<IProjectTagInterface, ProjectTagsService>();
 //Add db context and configure it
-builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection")); });
+builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("HomeConnection")); });
 //builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection"),b=>b.MigrationsAssembly("Infrastructure")); });
 var app = builder.Build();
 
@@ -86,6 +86,8 @@ app.UseCors(x => x
      .AllowAnyHeader()
      .AllowCredentials()
       .SetIsOriginAllowed(origin => true));
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthorization();
 
 app.MapControllers();

@@ -1,10 +1,10 @@
 ﻿using Application.Contracts;
 using Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CVproject.api.Controllers
+namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,32 +21,65 @@ namespace CVproject.api.Controllers
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)]//Cache response
         public async Task<IActionResult> GetAll()
         {
-            var a = await _hobbyService.GetAllHobbies();
-            if (a == null) { return NoContent(); }
-            return Ok(await _hobbyService.GetAllHobbies());
+            try
+            {
+                var a = await _hobbyService.GetAllHobbies();
+                return Ok(await _hobbyService.GetAllHobbies());
+            }
+            catch (EmptyOrNoRecordsException)
+            {
+                return NoContent();
+            }
+
         }
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var a = await _hobbyService.DeleteHobby(id);
-            if (a == null) { return NotFound(); }
-            return Ok("Deleted");
+            try
+            {
+                var a = await _hobbyService.DeleteHobby(id);
+                return Ok("Deleted");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] Hobby hobby)
         {
-            var a = await _hobbyService.AddHobby(hobby);
-            return Created();
+            if (!ModelState.IsValid) { return BadRequest(); }
+            try
+            {
+                var a = await _hobbyService.AddHobby(hobby);
+                return Created();
+            }
+            catch (ValidationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
         [HttpPatch]
         [Route("{id}")]
         public async Task<IActionResult> update([FromRoute] int id, [FromBody] JsonPatchDocument<Hobby> hobby)
         {
-            if (hobby == null) { return BadRequest("Invalid patch document"); }
-            var a = await _hobbyService.UpdateHobby(id, hobby);
-            if (a == null) { return NotFound(); }
-            return Ok(a);
+            try
+            {
+                if (hobby == null) { return BadRequest("Invalid patch document"); }
+                var a = await _hobbyService.UpdateHobby(id, hobby);
+                return Ok(a);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
         }
     }
 }
