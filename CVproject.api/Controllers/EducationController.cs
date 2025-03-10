@@ -1,5 +1,8 @@
 ﻿using Application.Contracts;
+using Application.Services;
 using Domain.Entities;
+using Domain.Exceptions;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -13,32 +16,72 @@ namespace API.Controllers
         {
             _educationService = educationService;
         }
+
         [HttpGet]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)]//Cache response
         public async Task<IActionResult> GettAll()
         {
-            return Ok(await _educationService.GetAllEducation());
+            try
+            {
+                var a = await _educationService.GetAllEducation();
+                return Ok(a);
+            }
+            catch (EmptyOrNoRecordsException)
+            {
+                return NoContent();
+            }
+           
         }
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var a = await _educationService.DeleteEducation(id);
-            if (a == null) { return NotFound(); }
-            return Ok("Deleted");
+            try
+            {
+                var a = await _educationService.DeleteEducation(id);
+                return Ok("Deleted");
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+           
         }
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] Education EDU)
         {
-            var a = await _educationService.AddEducation(EDU);
-            return Created();
+            if (!ModelState.IsValid) { return BadRequest(); }
+            try
+            {
+                var a = await _educationService.AddEducation(EDU);
+                return Created();
+            }
+            catch (ValidationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+
         }
         [HttpPatch]
         [Route("{id}")]
-        public async Task<IActionResult> update([FromRoute] int id, [FromBody] Education EDU)
+        public async Task<IActionResult> update([FromRoute] int id, [FromBody] JsonPatchDocument<Education> EDU)
         {
-            var a = await _educationService.UpdateEducation(id, EDU);
-            if (a == null) { return NotFound(); }
-            return Ok(a);
+            try
+            {
+                if (EDU == null) { return BadRequest("Invalid patch document"); }
+                var a = await _educationService.UpdateEducation(id, EDU);
+                return Ok(a);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (BusinessRuleViolationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
         }
     }
 }

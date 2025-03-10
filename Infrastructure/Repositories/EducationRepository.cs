@@ -1,6 +1,8 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
+using Domain.Exceptions;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -14,38 +16,53 @@ namespace Infrastructure.Repositories
         }
         public async Task<Education> Add(Education education)
         {
-            await _context.educations.AddAsync(education);
-            await _context.SaveChangesAsync();
-            return education;
+            try 
+            {
+                await _context.educations.AddAsync(education);
+                await _context.SaveChangesAsync();
+                return education;
+            }
+            catch(Exception)
+            {
+                throw new BusinessRuleViolationException($"Value {education.Title} can't be added");
+            }
+
         }
 
         public async Task<bool> Delete(int id)
         {
-            var a = await _context.educations.FindAsync(id);
-            _context.educations.Remove(a);
-            await _context.SaveChangesAsync();
-            return a;
+            try
+            {
+                var a = await _context.educations.FindAsync(id);
+                _context.educations.Remove(a);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception)
+            {
+                throw new NotFoundException($"The ID: {id} isn't found in the records");
+            }
+;
         }
-
         public async Task<List<Education>> GetAll()
         {
-            var a = _context.educations.AsQueryable();
-            return await a.ToListAsync();
+            var r = await _context.educations.AsNoTracking().ToListAsync(); // Prevents EF from tracking objects in memeory
+            return r.Count == 0 ? throw new EmptyOrNoRecordsException("No hobby exists") : r;
         }
-
-        public async Task<Education> Update(int id, Education education)
+        public async Task<Education> Update(int id, JsonPatchDocument<Education> education)
         {
-            var a = await _context.educations.FindAsync(id);
-            if (a == null) { return null; }
-            a.Title = education.Title;
-            a.EducationLevel = education.EducationLevel;
-            a.Institution = education.Institution;
-            a.StartDate = education.StartDate;
-            a.EndDate = education.EndDate;
-            a.Description = education.Description;
-            a.ImageSrc = education.ImageSrc;
-            await _context.SaveChangesAsync();
-            return a;
+            try
+            {
+                var a = await _context.educations.FindAsync(id);
+                if (a == null) { throw new NotFoundException($"The ID: {id} isn't found in the records"); }
+                education.ApplyTo(a);
+                await _context.SaveChangesAsync();
+                return a;
+            }
+            catch (Exception)
+            {
+                throw new BusinessRuleViolationException($"Value can't be updated");
+            }   
         }
     }
 }

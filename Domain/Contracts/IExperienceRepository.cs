@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Domain.Contracts
 {
@@ -6,7 +7,7 @@ namespace Domain.Contracts
     {
         Task<List<Experience>> GetAll();
         Task<Experience> Add(Experience experience);
-        Task<Experience> Update(int id, Experience experience);//TODO FIX UPDATE
-        Task<Experience> Delete(int id);
+        Task<Experience> Update(int id, JsonPatchDocument<Experience> experience);
+        Task<bool> Delete(int id);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Contracts
 {
@@ -6,7 +7,7 @@ namespace Application.Contracts
     {
         Task<List<Education>> GetAllEducation();
         Task<Education> AddEducation(Education education);
-        Task<Education> UpdateEducation(int id, Education education);
-        Task<Education> DeleteEducation(int id);
+        Task<Education> UpdateEducation(int id, JsonPatchDocument<Education> education);
+        Task<bool> DeleteEducation(int id);
     }
 }

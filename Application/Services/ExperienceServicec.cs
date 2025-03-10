@@ -1,5 +1,7 @@
 ﻿using Application.Contracts;
+using Domain.Contracts;
 using Domain.Entities;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Application.Services
 {
@@ -15,7 +17,7 @@ namespace Application.Services
             return await _experienceRepository.Add(experience);
         }
 
-        public async Task<Experience> DeleteExperience(int id)
+        public async Task<bool> DeleteExperience(int id)
         {
             return await _experienceRepository.Delete(id);
         }
@@ -24,8 +26,7 @@ namespace Application.Services
         {
             return await _experienceRepository.GetAll();
         }
-
-        public async Task<Experience> UpdateExperience(int id, Experience experience)
+        public async Task<Experience> UpdateExperience(int id, JsonPatchDocument<Experience> experience)
         {
             return await _experienceRepository.Update(id, experience);
         }

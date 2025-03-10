@@ -1,6 +1,7 @@
 ﻿using Domain.Contracts;
 using Domain.Entities;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
@@ -19,7 +20,7 @@ namespace Infrastructure.Repositories
             return project;
         }
 
-        public async Task<Project> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             var a = await _context.projects.FindAsync(id);
             if (a == null) { return null; }
@@ -33,7 +34,7 @@ namespace Infrastructure.Repositories
             return await _context.projects.Include(a => a.Tags).ThenInclude(pt => pt.Tag).AsQueryable().ToListAsync();
         }
 
-        public async Task<Project> Update(int id, Project project)
+        public async Task<Project> Update(int id, JsonPatchDocument<Project> project)
         {
             var a = await _context.projects.FindAsync(id);
             if (a == null) { return null; }
