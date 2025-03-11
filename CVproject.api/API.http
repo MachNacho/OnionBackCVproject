@@ -1,4 +1,4 @@
-﻿@API_HostAddress = https://localhost:44344
+﻿@API_HostAddress = https://localhost:7186
 
 @id=3
 DELETE {{API_HostAddress}}/api/tag?id={{id}}
@@ -10,5 +10,14 @@ GET {{API_HostAddress}}/api/achivement
 ###
 
 GET {{API_HostAddress}}/api/hobby
+
+###
+
+POST {{API_HostAddress}}/api/achivement
+Content-Type: application/json
+
+{
+  //Achivement
+}
 
 ###

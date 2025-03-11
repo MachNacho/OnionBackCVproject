@@ -72,6 +72,10 @@ builder.Services.AddScoped<IProjectTagInterface, ProjectTagsService>();
 //DJ -EX
 builder.Services.AddScoped<IExperienceRepository, ExperienceRepository>();
 builder.Services.AddScoped<IExperienceService, ExperienceServicec>();
+//DJ -ED
+builder.Services.AddScoped<IEducationRepository, EducationRepository>();
+builder.Services.AddScoped<IEducationService, EducationService>();
+
 //Add db context and configure it
 
 
@@ -90,7 +94,7 @@ else
 }
 
 
-builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection")); });
+builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("HomeConnection")); });
 //builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection"),b=>b.MigrationsAssembly("Infrastructure")); });
 var app = builder.Build();
 
