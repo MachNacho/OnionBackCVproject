@@ -1,6 +1,14 @@
-﻿@API_HostAddress = https://localhost:7186
+﻿@API_HostAddress = https://localhost:44344
 
 @id=3
 DELETE {{API_HostAddress}}/api/tag?id={{id}}
+
+###
+
+GET {{API_HostAddress}}/api/achivement
+
+###
+
+GET {{API_HostAddress}}/api/hobby
 
 ###

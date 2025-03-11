@@ -21,7 +21,7 @@ namespace Infrastructure.Repositories
                 await _context.SaveChangesAsync();
                 return tag;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new BusinessRuleViolationException($"Value {tag.TagName} can't be added");
             }

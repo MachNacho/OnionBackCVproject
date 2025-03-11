@@ -8,9 +8,9 @@ namespace Application.Services
     public class ExperienceServicec : IExperienceService
     {
         private readonly IExperienceRepository _experienceRepository;
-        public ExperienceServicec(IExperienceRepository _experienceRepository)
+        public ExperienceServicec(IExperienceRepository experienceRepository)
         {
-            _experienceRepository = _experienceRepository;
+            _experienceRepository = experienceRepository;
         }
         public async Task<Experience> AddExperience(Experience experience)
         {

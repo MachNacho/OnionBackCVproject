@@ -1,5 +1,4 @@
 ﻿using Application.Contracts;
-using Application.Services;
 using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
@@ -31,7 +30,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddExperience(Experience experience)
         {
-            if (!ModelState.IsValid) { return BadRequest(); }
+            if (!ModelState.IsValid) { return BadRequest("Invalid object"); }
             try
             {
                 await _experienceService.AddExperience(experience);
@@ -47,7 +46,7 @@ namespace API.Controllers
         {
             try
             {
-                if(experience == null) { return BadRequest("Invalid patch document"); }
+                if (experience == null) { return BadRequest("Invalid patch document"); }
                 var result = await _experienceService.UpdateExperience(id, experience);
                 return Ok(result);
             }

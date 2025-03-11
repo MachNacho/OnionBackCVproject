@@ -1,9 +1,9 @@
-﻿using Domain.Entities;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
+using Domain.Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace Tests.IntegrationTest
 {

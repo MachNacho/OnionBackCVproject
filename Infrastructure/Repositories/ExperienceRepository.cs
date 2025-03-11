@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception) 
+            catch (Exception)
             {
                 throw new NotFoundException($"The ID: {id} isn't found in the records");
             }
@@ -47,8 +47,8 @@ namespace Infrastructure.Repositories
 
         public async Task<List<Experience>> GetAll()
         {
-                var r = await _context.experiences.AsNoTracking().ToListAsync(); // Prevents EF from tracking objects in memeory
-                return r.Count == 0 ? throw new EmptyOrNoRecordsException("No hobby exists") : r;
+            var r = await _context.experiences.AsNoTracking().ToListAsync(); // Prevents EF from tracking objects in memeory
+            return r.Count == 0 ? throw new EmptyOrNoRecordsException("No hobby exists") : r;
         }
 
         public async Task<Experience> Update(int id, JsonPatchDocument<Experience> experience)

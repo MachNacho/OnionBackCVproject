@@ -16,13 +16,13 @@ namespace Infrastructure.Repositories
         }
         public async Task<Education> Add(Education education)
         {
-            try 
+            try
             {
                 await _context.educations.AddAsync(education);
                 await _context.SaveChangesAsync();
                 return education;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new BusinessRuleViolationException($"Value {education.Title} can't be added");
             }
@@ -38,7 +38,7 @@ namespace Infrastructure.Repositories
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 throw new NotFoundException($"The ID: {id} isn't found in the records");
             }
@@ -62,7 +62,7 @@ namespace Infrastructure.Repositories
             catch (Exception)
             {
                 throw new BusinessRuleViolationException($"Value can't be updated");
-            }   
+            }
         }
     }
 }

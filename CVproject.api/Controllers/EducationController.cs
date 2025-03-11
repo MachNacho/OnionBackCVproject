@@ -1,5 +1,4 @@
 ﻿using Application.Contracts;
-using Application.Services;
 using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
@@ -30,7 +29,7 @@ namespace API.Controllers
             {
                 return NoContent();
             }
-           
+
         }
 
         [HttpDelete]
@@ -46,7 +45,7 @@ namespace API.Controllers
             {
                 return NotFound(new { message = ex.Message });
             }
-           
+
         }
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] Education EDU)

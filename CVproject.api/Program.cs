@@ -69,8 +69,11 @@ builder.Services.AddScoped<ITagService, TagService>();
 //DJ - TP
 builder.Services.AddScoped<IProjectTagRepository, ProjectTagRepository>();
 builder.Services.AddScoped<IProjectTagInterface, ProjectTagsService>();
+//DJ -EX
+builder.Services.AddScoped<IExperienceRepository, ExperienceRepository>();
+builder.Services.AddScoped<IExperienceService, ExperienceServicec>();
 //Add db context and configure it
-builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("HomeConnection")); });
+builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection")); });
 //builder.Services.AddDbContext<ApplicationDbContext>(Options => { Options.UseSqlServer(builder.Configuration.GetConnectionString("WorkConnection"),b=>b.MigrationsAssembly("Infrastructure")); });
 var app = builder.Build();
 

@@ -16,7 +16,7 @@ namespace API.Controllers
         }
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteTag([FromRoute]int id)
+        public async Task<IActionResult> DeleteTag([FromRoute] int id)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace API.Controllers
         }
         [HttpPatch]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateTag([FromRoute] int id,[FromBody] Tag tag)
+        public async Task<IActionResult> UpdateTag([FromRoute] int id, [FromBody] Tag tag)
         {
             try
             {

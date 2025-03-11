@@ -1,5 +1,4 @@
 ﻿using Application.Contracts;
-using Application.Services;
 using Domain.Entities;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.JsonPatch;
@@ -7,8 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
+
     [ApiController]
+    [Route("api/[controller]")]
     public class ProjectController : ControllerBase
     {
         private readonly IProjectService _projectService;

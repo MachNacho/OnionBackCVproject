@@ -1,9 +1,9 @@
-﻿using API.Exceptions;
+﻿using System.Net;
+using System.Text.Json;
+using API.Exceptions;
 using Application.Exceptions;
 using Domain.Exceptions;
 using Infrastructure.Exceptions;
-using System.Net;
-using System.Text.Json;
 
 namespace API.Middleware
 {

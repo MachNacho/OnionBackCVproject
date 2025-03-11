@@ -1,6 +1,6 @@
-﻿using Domain.Entities;
+﻿using System.Text.RegularExpressions;
+using Domain.Entities;
 using Domain.Exceptions;
-using System.Text.RegularExpressions;
 
 namespace Application.Validator
 {
