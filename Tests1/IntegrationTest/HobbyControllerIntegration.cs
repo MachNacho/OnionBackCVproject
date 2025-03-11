@@ -2,8 +2,10 @@
 using System.Text.Json;
 using Domain.Entities;
 using FluentAssertions;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 
 namespace Tests.IntegrationTest
 {
@@ -12,12 +14,16 @@ namespace Tests.IntegrationTest
     {
         private HttpClient _client;
         private WebApplicationFactory<Program> _factory;
+        private ApplicationDbContext _context;
         [SetUp]
         public void Setup()
         {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            .Options;   
             _factory = new WebApplicationFactory<Program>();
             _client = _factory.CreateClient();
-            _client.BaseAddress = new System.Uri("https://localhost:44344");
+            //_client.BaseAddress = new System.Uri("https://localhost:44344");
         }
 
         [Test]

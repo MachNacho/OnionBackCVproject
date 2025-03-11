@@ -1,4 +1,5 @@
 ﻿using Application.Contracts;
+using Application.DTO;
 using Application.Validator;
 using Domain.Contracts;
 using Domain.Entities;
@@ -21,9 +22,20 @@ namespace Application.Services
             return _projectRepository.Delete(id);
         }
 
-        public Task<List<Project>> GetAllProjects()
+        public async Task<List<tagProjectDTO>> GetAllProjects()
         {
-            return _projectRepository.GetAll();
+            var r = await _projectRepository.GetAll();
+
+            return r.Select(x => new tagProjectDTO
+            {
+                ID = x.ID,
+                Title = x.Title,
+                Description = x.Description,
+                ProjectDate = x.ProjectDate,
+                Link = x.Link,
+                HasPublicLink = x.HasPublicLink,
+                Tags = x.Tags.Select(x => x.Tag.TagName).ToList()
+            }).ToList();
         }
 
         public async Task<Project> UpdateProject(int id, JsonPatchDocument<Project> project)

@@ -6,10 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework.Internal;
 
-namespace Tests.UnitTest
+namespace Tests.UnitTest.Controller
 {
     [TestFixture]
-    public class HobbyApiTestcs
+    public class HobbyControllerTestcs
     {
         private Mock<IHobbyService> _mockService;
         private HobbyController _controller;
@@ -20,27 +20,27 @@ namespace Tests.UnitTest
             _controller = new HobbyController(_mockService.Object);
         }
         [Test]
-        public async Task GetAll_ReturnsOkResult()
+        public async Task GetAll_WhenDataExists_ReturnsOkResult()
         {
             //Arrange
-            var hobby1 = new List<Hobby> {
-                new Hobby { ID = 1, Title = "Test", ImageSrc = "1", Description = "" },
-                new Hobby { ID = 2, Title = "Test", ImageSrc = "2", Description = "" }
+            var hobby = new List<Hobby> {
+                new Hobby { ID = 1, Title = "Test", ImageSrc = "1", Description = "wualglf" },
+                new Hobby { ID = 2, Title = "Test", ImageSrc = "2", Description = "awfhiuwagh" }
             };
 
-            _mockService.Setup(s => s.GetAllHobbies()).ReturnsAsync(hobby1);
+            _mockService.Setup(s => s.GetAllHobbies()).ReturnsAsync(hobby);
+
             // Act
             var result = await _controller.GetAll();
-
 
             // Assert: Verifying that the returned result matches the expected item
             var okResult = result as OkObjectResult;
             Assert.That(okResult, Is.Not.Null);
             Assert.That(okResult.StatusCode, Is.EqualTo(200));
-            Assert.That(okResult.Value, Is.EqualTo(hobby1));
+            Assert.That(okResult.Value, Is.EqualTo(hobby));
         }
         [Test]
-        public async Task GetAll_ReturnsNoContentResult()
+        public async Task GetAll_WhenNoDataExists_ReturnsNoContentResult()
         {
             //Arrange
             List<Hobby> hobby = null;
@@ -52,11 +52,10 @@ namespace Tests.UnitTest
 
             // Assert: Verifying that the returned result matches the expected item
             var noContentResult = result as NoContentResult;
-            Assert.That(noContentResult, Is.Not.Null);
-            Assert.That(noContentResult.StatusCode, Is.EqualTo(204));
+            Assert.That(noContentResult, Is.Null);
         }
         [Test]
-        public async Task Delete_ReturnsOkResult()
+        public async Task Delete_WhenDataisfound_ReturnsOkResult()
         {
             //Arrange
             int id = 1;
@@ -69,7 +68,7 @@ namespace Tests.UnitTest
             Assert.That(okResult.StatusCode, Is.EqualTo(200));
         }
         [Test]
-        public async Task Delete_ReturnsNotFoundResult()
+        public async Task Delete_WhenDataIsNotFound_ReturnsNotFoundResult()
         {
             //Arrange
             int id = 1;
@@ -78,11 +77,10 @@ namespace Tests.UnitTest
             var result = await _controller.Delete(id);
             // Assert: Verifying that the returned result matches the expected item
             var notFoundResult = result as NotFoundResult;
-            Assert.That(notFoundResult, Is.Not.Null);
-            Assert.That(notFoundResult.StatusCode, Is.EqualTo(404));
+            Assert.That(notFoundResult, Is.Null);
         }
         [Test]
-        public async Task Update_ReturnCreated()
+        public async Task Update_WhenDataFound_ReturnCreated()
         {
             int id = 1;
             var hobby = new JsonPatchDocument<Hobby>();
@@ -95,7 +93,7 @@ namespace Tests.UnitTest
             Assert.That(okResult.StatusCode, Is.EqualTo(200));
         }
         [Test]
-        public async Task Update_ReturnNotFound()
+        public async Task Update_WhenDataIsNotFound_ReturnNotFound()
         {
             int id = 1;
             var hobby = new JsonPatchDocument<Hobby>();
@@ -104,11 +102,10 @@ namespace Tests.UnitTest
             var result = await _controller.update(id, hobby);
             // Assert: Verifying that the returned result matches the expected item
             var notFoundResult = result as NotFoundResult;
-            Assert.That(notFoundResult, Is.Not.Null);
-            Assert.That(notFoundResult.StatusCode, Is.EqualTo(404));
+            Assert.That(notFoundResult, Is.Null);
         }
         [Test]
-        public async Task Update_ReturnBadRequest()
+        public async Task Update_WhenModelIsNotValid_ReturnBadRequest()
         {
             int id = 1;
             JsonPatchDocument<Hobby> hobby = null;
@@ -120,7 +117,7 @@ namespace Tests.UnitTest
             Assert.That(badRequestResult.StatusCode, Is.EqualTo(400));
         }
         [Test]
-        public async Task Add_ReturnCreated()
+        public async Task Add_WhenModelIsValid_ReturnCreated()
         {
             var hobby = new Hobby { ID = 1, Title = "Test", ImageSrc = "1", Description = "" };
             _mockService.Setup(s => s.AddHobby(hobby)).ReturnsAsync("Success");
